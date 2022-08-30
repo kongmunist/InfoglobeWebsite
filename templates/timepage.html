@@ -9,19 +9,34 @@
        }).format(xNum);
     }
 
+    function getSign(xNum){
+        if (xNum >= 0){
+            return "+";
+        } else if (xNum < 0){
+            return "-";
+        }
+    }
+
     document.addEventListener("DOMContentLoaded", function(event) {
         var display = document.getElementById("timeoffset");
         display.style.padding = "10px";
 
         var localTimeOffset = new Date().getTimezoneOffset();
+        localTimeOffset = -localTimeOffset;
         fetch(document.URL + "?offset=" + localTimeOffset)
           .then((response) => {
             return response.json();
           })
           .then((myJson) => {
-            display.innerHTML = "Globe time set to GMT" + addSign(myJson.minuteOffset/60)
+            var returnedOffset = myJson.minuteOffset/60;
+            var localOffset = localTimeOffset/60;
+
+            var returnedMinOffset = getSign(returnedOffset) + String(Math.abs(returnedOffset)).padStart(2, '0');
+            var localMinOffset = getSign(localOffset) + String(Math.abs(localOffset)).padStart(2, '0');
+
+            display.innerHTML = "Globe time set to GMT" + returnedMinOffset + ":00"
                            + " hours<br>"
-            display.innerHTML += "your offset is GMT" + addSign(localTimeOffset/60) +
+            display.innerHTML += "your offset is GMT" + localMinOffset + ":00" +
                     " hours<br>Your timezone is " + Intl.DateTimeFormat().resolvedOptions().timeZone
 
             if (myJson.minuteOffset != localTimeOffset){

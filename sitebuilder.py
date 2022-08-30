@@ -91,7 +91,9 @@ def jsonFile():
     with open('static/messages.json', "r+") as f:
         d = json.loads(f.read())
         curTime = datetime.now().timestamp()
+        print(curTime)
         curTime = int(curTime) + readTimeoffset()
+        print(curTime)
         d.update({"timestamp": curTime})
         f.truncate(0) # both needed
         f.seek(0)
@@ -107,8 +109,9 @@ def jsonFile():
 def setTime():
     minuteOffset = request.args.get('offset')
     if minuteOffset:
+        minuteOffset = int(minuteOffset)
         with open('static/timeOffset.txt', "w+") as f:
-            f.write(minuteOffset*60)
+            f.write(str(minuteOffset//60))
         return jsonify({"minuteOffset": minuteOffset})
 
     return render_template("timepage.html")
