@@ -8,7 +8,7 @@ from datetime import datetime
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 # app.config['DEBUG'] = True
-MSG_LIMIT = 3
+MSG_LIMIT = 4
 HISTORY_LIMIT = 20
 MAX_LENGTH = 35
 # freezer = Freezer(app)
@@ -37,7 +37,7 @@ def save_msg():
             if (msg not in data):
                 data.insert(0, msg)
 
-            data = data[:3]
+            data = data[:MSG_LIMIT]
             f.write("\n".join(data))
 
         with open('static/messages.json', "w+") as f:
