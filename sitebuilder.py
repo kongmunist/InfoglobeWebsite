@@ -91,9 +91,9 @@ def jsonFile():
     with open('static/messages.json', "r+") as f:
         d = json.loads(f.read())
         curTime = datetime.now().timestamp()
-        print(curTime)
-        curTime = int(curTime) + readTimeoffset()
-        print(curTime)
+        timeOffset = readTimeoffset()
+        print(curTime, timeOffset)
+        curTime = int(curTime) + readTimeoffset()*3600
         d.update({"timestamp": curTime})
         f.truncate(0) # both needed
         f.seek(0)
