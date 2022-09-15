@@ -131,9 +131,9 @@ def readTimeoffset():
 def table():
     return render_template("table.html")
 
-@app.route("/draggable_table")
+@app.route("/dragtable")
 def grad_table():
-    return render_template("grad_table.html")
+    return render_template("anothertable.html")
 
 
 

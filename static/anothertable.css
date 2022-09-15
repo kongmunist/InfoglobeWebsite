@@ -1,0 +1,109 @@
+    /* Overall div table */
+.addableDiv {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 3em 1fr 1fr;
+  align-items: stretch;
+  position: absolute;
+
+  resize: both;
+  overflow: hidden;
+
+  z-index: 9;
+  background-color: #f1f1f1;
+  border: 1px solid #000000;
+}
+
+.editButton{
+  height: 1em;
+  width: 1em;
+  border-radius: 50%;
+  display: relative;
+  background: green;
+}
+
+
+
+
+/* Title box for each table  */
+.headertext{
+  cursor: text;
+  background-color: purple;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.divheader {
+  padding: 0px 10px 0px 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
+
+  grid-column: 1 / -1;
+}
+
+
+
+
+/* Entries in the table */
+.entry{
+  padding: 0px 0px 0px 5px;
+  grid-column: 1/3;
+  min-height:1em;
+
+  border-bottom: 1px solid #000000;
+}
+
+.entryExpanded{
+  padding: 0px 5px 0px 5px;
+  grid-column: 1/2;
+  min-height:1em;
+
+  border-bottom: 1px solid #000000;
+  border-right: 1px solid #000000;
+}
+
+.entrySublist{
+  grid-column: 2/3;
+}
+
+/* nested div table */
+.innerDiv{
+  display: inline-grid;
+  align-items: stretch;
+
+  resize: both;
+  overflow: hidden;
+
+  border: .11px solid #000000;
+  padding-left: 0px 5px 0px 5px;
+  width: 100%;
+  min-height: 100%;
+  max-height: max-content;
+}
+
+
+
+/* Options for adding/subtracting at the bottom of each table */
+.plus{
+  grid-column: 1/2;
+  background-color:lightgreen;
+}
+.minus{
+  grid-column: 2/3;
+  background-color:salmon;
+}
+.plus, .minus{
+  align-self: stretch;
+  justify-self: stretch;
+  text-align: center;
+  cursor: pointer;
+  line-height: 2em;
+}
+
+
+
+
+
+    /* EOS */
