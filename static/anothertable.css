@@ -2,7 +2,8 @@
 .addableDiv {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 3em 1fr 1fr;
+  grid-template-rows: 3em; /* 1fr should be the last row, tables should start empty */
+
   align-items: stretch;
   position: absolute;
 
@@ -12,6 +13,8 @@
   z-index: 9;
   background-color: #f1f1f1;
   border: 1px solid #000000;
+
+  border-radius: 10%;
 }
 
 .editButton{
@@ -19,6 +22,7 @@
   width: 1em;
   border-radius: 50%;
   display: relative;
+  position:absolute;
   background: green;
 }
 
@@ -86,6 +90,7 @@
 
 
 /* Options for adding/subtracting at the bottom of each table */
+/* TODO: figure out how to keep just the last column a certain size */
 .plus{
   grid-column: 1/2;
   background-color:lightgreen;
