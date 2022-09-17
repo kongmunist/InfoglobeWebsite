@@ -2,9 +2,14 @@
 dragElement(document.getElementById("mydiv"));
 //document.onclick = () => console.log("body click");
 document.addEventListener("keypress", function(event) {
-  if (event.key == "n" && document.activeElement.tagName == "BODY") {
-    alert('hi.');
-  }
+    console.log(event.keyCode)
+    if (document.activeElement.tagName == "BODY"){
+        if (event.key == "n") {
+            createAddableDiv();
+        } else if (event.key == "c"){
+            clearAddableDivs();
+        }
+    }
 });
 
 
@@ -72,14 +77,13 @@ function createEntry(){
 }
 
 function createEntryWithText(txt){
-  elem = document.createElement("div");
+  let elem = document.createElement("div");
   elem.className = "entry";
   elem.contentEditable = true;
-
-  elem.onclick = () => focAndAddDot(event)
-  elem.onblur = () => unfoc(event)
-
   elem.innerText = txt;
+
+  elem.onclick = (event) => focAndAddDot(event)
+  elem.onblur = (event) => unfoc(event)
 
   return elem;
 }
@@ -87,17 +91,13 @@ function createEntryWithText(txt){
 
 // Right sided cell in a split cell
 function createSublist(){
-  elem = document.createElement("div");
+  let elem = document.createElement("div");
   elem.className = "entrySublist";
 
-  inDiv = document.createElement("div");
-  inDiv.contentEditable = true;
+  let inDiv = createEntry();
   inDiv.className = "innerDiv";
-  inDiv.onclick = () => focAndAddDot(event)
-  inDiv.onblur = () => unfoc(event)
 
   elem.appendChild(inDiv)
-
   return elem;
 }
 
@@ -171,8 +171,27 @@ function createAddableDiv(){
     dragElement(overallDiv);
     addEmptyEntryToTable(overallDiv.id) // Also add an empty row so its not so lonely looking
 
+    // Set its position randomly on the screen
+    overallDiv.style.top = (Math.random() * window.innerHeight - 50) + "px";
+    overallDiv.style.left = (Math.random() * window.innerWidth - 50) + "px";
+
     return overallDiv
 }
+
+function clearAddableDivs(){
+    // get all addableDivs and their titles
+    allAdds = Array.from(document.getElementsByClassName("addableDiv"));
+    allTitles = allAdds.map(el => el.children[0].children[0].innerText)
+
+    const regex = /^New Div \d+$/gm;
+    const titleMatches = allTitles.filter(el => el.match(regex))
+    const matches = allAdds.filter((elem, i) => /^New Div \d+$/gm.test(allTitles[i]));
+
+    matches.map(elem => elem.remove())
+    console.log("Removed empty divs of quantity: " + matches.length)
+}
+
+
 
 
 // When a box is highlighted, this function moves the dot to its side and
