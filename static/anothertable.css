@@ -15,6 +15,12 @@
   border: 1px solid #000000;
 
   border-radius: 10%;
+  left:100px;
+  top:100px;
+}
+
+.addableDiv:focus-within .divheader{
+  background-color: #55b1fa;
 }
 
 .editButton{
@@ -24,6 +30,9 @@
   display: relative;
   position:absolute;
   background: green;
+  border: 2px solid #000000;
+
+  cursor: pointer;
 }
 
 
@@ -65,11 +74,14 @@
   min-height:1em;
 
   border-bottom: 1px solid #000000;
-  border-right: 1px solid #000000;
+
 }
 
 .entrySublist{
   grid-column: 2/3;
+  border-bottom: 1px solid #000000;
+  border-left: 1px solid #000000;
+
 }
 
 /* nested div table */
@@ -80,8 +92,8 @@
   resize: both;
   overflow: hidden;
 
-  border: .11px solid #000000;
-  padding-left: 0px 5px 0px 5px;
+/*  border: .11px solid #000000;
+  padding-left: 0px 5px 0px 5px;*/
   width: 100%;
   min-height: 100%;
   max-height: max-content;
@@ -98,6 +110,7 @@
 .minus{
   grid-column: 2/3;
   background-color:salmon;
+  border-left: 1px solid #000000;
 }
 .plus, .minus{
   align-self: stretch;

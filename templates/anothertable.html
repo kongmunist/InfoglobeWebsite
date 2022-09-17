@@ -31,30 +31,17 @@
 
 
 <body>
+
+<button onclick="createAddableDiv()">Add new table</button>
+
     <!-- Draggable DIV -->
 <!-- Include a header DIV with the same name as the draggable DIV, followed by "header" -->
-<div id="mydiv" class="addableDiv" style="left:100px">
+<div id="mydiv" class="addableDiv" onclick="blockClick(event)">
   <div id="mydivheader" class="divheader">
     <div contenteditable class="headertext" onmousedown="blockClick(event)" style="">
       <p>Trip to Zurich</p>
     </div>
   </div>
-
-<!--  <div class="entry" contenteditable>Get residence permit</div>-->
-<!--  <div class="entry" contenteditable>Other stuff</div>-->
-
-
-<!--  <div class="entryExpanded" contenteditable>-->
-<!--    Buy a couch-->
-<!--  </div>-->
-
-<!--  <div class="entrySublist" id="yes" contenteditable-->
-<!--  onfocus="focAndAddDot(event)"-->
-<!--  onblur="unfoc(event)">-->
-<!--    <div contenteditable class="innerDiv">-->
-<!--    </div>-->
-<!--  </div>-->
-
 
 
   <div class="plus" style="" onclick="plusRow(event)"><b>+</b></div>
@@ -62,7 +49,7 @@
 </div>
 
 
-  <div id="editButton" class="editButton" onclick="console.log('qsa')">
+  <div id="editButton" class="editButton" onclick="dotClicked(event)">
   </div>
 
 
