@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block headextra %}
+
 <script src="{{url_for('static', filename='submitMsg.js')}}"></script>
-
-
 <script src="{{url_for('static', filename='showLastAccessed.js')}}"></script>
+<script src="{{url_for('static', filename='fetchUpdate.js')}}"></script>
 
 {% endblock %}
 
@@ -54,7 +54,7 @@
 
 <footer id="footer" style="text-align:center; color:#154360">
 <!--    <div class="container">-->
-    Made with Love, in Squalor
+    <a style="underline:false" href="https://github.com/kongmunist/InfoglobeWebsite">Made with Love</a>, in Squalor
 <!--    <div class="break"></div> &lt;!&ndash; break &ndash;&gt;-->
     <br>
     Copyright <a style="underline:false" href="https://andykong.org"> A </a> and L

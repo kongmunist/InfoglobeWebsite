@@ -42,5 +42,4 @@ function handleForm(event) {
   form.reset()
 }
 
-
 window.onload = init

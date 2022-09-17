@@ -57,16 +57,36 @@ def save_msg():
 
     return jsonify(data)
 
+@app.route('/getupdate', methods = ['GET'])
+def get_update():
+        if (request.method == "GET"):
+            try:
+                data = dict()
+                # Load in the last three messages
+                with open('static/messages.txt', 'r') as f:
+                    values = f.read().strip().split('\n')
 
+                # Load in the last 20 from history
+                with open("static/log.txt", "r") as f:
+                    rawHist = f.read().strip().split('\n')
+                rawHist = [x[20:] for x in rawHist]
+                seen = set()
+                history = [x for x in rawHist if len(seen) < len(seen.add(x) or seen)]
+                history = history[::-1][MSG_LIMIT:MSG_LIMIT+HISTORY_LIMIT]
+                # print(history)
+                data['history'] = history
+                data['values'] = values
+            except Exception as e:
+                print(e)
+        return jsonify(data)
 
 @app.route('/', methods = ['GET'])
 def index():
-    data = []
     if (request.method == "GET"):
         try:
             # Load in the last three messages
             with open('static/messages.txt', 'r') as f:
-                data = f.read().strip().split('\n')
+                values = f.read().strip().split('\n')
 
             # Load in the last 20 from history
             with open("static/log.txt", "r") as f:
@@ -79,8 +99,7 @@ def index():
         except Exception as e:
             print(e)
     # return render_template("form.html", values=data, history = [chr(x) for x in range(65,91)])
-    return render_template("form.html", values=data, history = history)
-
+    return render_template("form.html", values=values, history = history)
 
 
 
