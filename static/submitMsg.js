@@ -27,6 +27,8 @@ function handleForm(event) {
     body: data,
   })
 
+  // TODO: don't update if message is not accepted
+
   // update history
   const span = document.createElement("span")
   span.innerHTML = recents.lastElementChild.innerHTML

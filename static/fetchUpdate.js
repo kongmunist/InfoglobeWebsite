@@ -1,10 +1,5 @@
 const intervalID = setInterval(getUpdate, 1000);
 
-function myCallback()
-{
- console.log("b");
-}
-
 async function getUpdate() {
   const recents = document.getElementById("recent_msg")
   const history = document.getElementById("full_history")
@@ -17,7 +12,6 @@ async function getUpdate() {
   })
   .then(response => response.json())
   .then(json => {
-    console.log(json.history);
     recents.innerHTML = ""
     json.values.forEach((item, i) => {
         const li = document.createElement("li")
@@ -33,8 +27,6 @@ async function getUpdate() {
         history.appendChild(span)
         history.appendChild(br)
     });
-
-    console.log(json.values);
 
   });
 }

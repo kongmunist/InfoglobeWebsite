@@ -1,18 +1,23 @@
 // This loads in a text file as a string
-function loadFile(filePath) {
+async function loadFile(filePath) {
   var result = null;
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET", filePath, false);
-  xmlhttp.send();
-  if (xmlhttp.status==200) {
-    result = xmlhttp.responseText;
-  }
+  result = await fetch(filePath, {
+    method: 'get'
+  })
+  .then((response) => {
+    if (response.ok) {
+      return response.text();
+    }
+  })
+  .then((response) => {
+    return response;
+  })
   return result;
 }
 
 // Get the last time the Infoglobe accessed this website
-function writeLastAccessed(){
-    timeStr = loadFile("static/lastLogged.txt");
+async function writeLastAccessed(){
+    timeStr = await loadFile("static/lastLogged.txt");
     lastTime = new Date(parseInt(timeStr + "000")); // 000 needed to account for milliseconds
     timeShowcase = document.getElementById("lastAccessed");
 
