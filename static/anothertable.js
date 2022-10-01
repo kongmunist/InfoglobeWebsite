@@ -103,9 +103,17 @@ function createSublist(){
 
 var expose;
 function plusRow(event){
-  let pDiv = getCurrentFocusedTable(event.path);
-  let kids = pDiv.children;
-  kids[kids.length - 2].before(createEntry());
+    let pDiv = getCurrentFocusedTable(event.path);
+    expose = pDiv;
+    let kids = pDiv.children;
+    kids[kids.length - 2].before(createEntry());
+
+    // Preserve size of the plusrow by modifying the current addableDiv
+//    let curDiv = getCurrentFocusedTable(event.path)
+    console.log(kids.length);
+    pDiv.style.gridTemplateRows = "3em repeat(" + (kids.length - 3) + ", 1fr) 2em"
+//    console.log(curDiv)
+
 }
 
 function minusRow(event){
@@ -118,8 +126,9 @@ function minusRow(event){
   if (maybeRemove.className == "entry"){
   	if (maybeRemove.innerText == ""){
     	maybeRemove.remove();
+    	// Also adjust the row distribution
+    	pDiv.style.gridTemplateRows = "3em repeat(" + (kids.length - 3) + ", 1fr) 2em"
     }
-//  	console.log("entry")
   } else if (maybeRemove.className == "entrySublist"){
     // Need to remove entry sublist if its empty, otherwise
   	if (maybeRemove.innerText == ""){
@@ -219,7 +228,6 @@ function unfoc(event){
 function moveDotBeside(elmnt){
     // set dot location
     let cellPos = getPos(elmnt)
-    console.log(elmnt)
     // If dot is beside an entrySublist, turn it red, otherwise turn it green
     let dotcolor = (elmnt.className == "entrySublist" || elmnt.className == "innerDiv") ? "salmon" : "#33ff11";
     button.style.background = dotcolor;

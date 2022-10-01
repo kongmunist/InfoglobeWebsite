@@ -2,7 +2,7 @@
 .addableDiv {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 3em; /* 1fr should be the last row, tables should start empty */
+  grid-template-rows: 3em repeat(1, 1fr) 2em; /* 1fr should be the last row, tables should start empty */
 
   align-items: stretch;
   position: absolute;
@@ -14,7 +14,7 @@
   background-color: #f1f1f1;
   border: 1px solid #000000;
 
-  border-radius: 10%;
+  border-radius: 1em;
   left:100px;
   top:100px;
 }
@@ -102,15 +102,16 @@
 
 
 /* Options for adding/subtracting at the bottom of each table */
-/* TODO: figure out how to keep just the last column a certain size */
-.plus{
+ .plus{
   grid-column: 1/2;
   background-color:lightgreen;
+  user-select: none;
 }
 .minus{
   grid-column: 2/3;
   background-color:salmon;
   border-left: 1px solid #000000;
+  user-select: none;
 }
 .plus, .minus{
   align-self: stretch;
