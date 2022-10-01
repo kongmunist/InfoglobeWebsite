@@ -101,6 +101,18 @@ function createSublist(){
   return elem;
 }
 
+// Keeps the header, plus, and minus buttons always the same height
+// Call this after modifying the number of vertical rows in an addableDiv
+function controlEndRowHeight(pDiv){
+    let numVertRows = Array.from(pDiv.children).reduce((acc, obj) => {
+        if (obj.className != "entrySublist"){
+            return acc + 1;
+        }
+    }, 0);
+
+    pDiv.style.gridTemplateRows = "3em repeat(" + (numVertRows - 3) + ", 1fr) 2em"
+}
+
 var expose;
 function plusRow(event){
     let pDiv = getCurrentFocusedTable(event.path);
@@ -109,12 +121,9 @@ function plusRow(event){
     kids[kids.length - 2].before(createEntry());
 
     // Preserve size of the plusrow by modifying the current addableDiv
-//    let curDiv = getCurrentFocusedTable(event.path)
-    console.log(kids.length);
-    pDiv.style.gridTemplateRows = "3em repeat(" + (kids.length - 3) + ", 1fr) 2em"
-//    console.log(curDiv)
-
+    controlEndRowHeight(pDiv);
 }
+
 
 function minusRow(event){
   let pDiv = getCurrentFocusedTable(event.path)
@@ -126,8 +135,8 @@ function minusRow(event){
   if (maybeRemove.className == "entry"){
   	if (maybeRemove.innerText == ""){
     	maybeRemove.remove();
-    	// Also adjust the row distribution
-    	pDiv.style.gridTemplateRows = "3em repeat(" + (kids.length - 3) + ", 1fr) 2em"
+    	// Also adjust the row heights
+    	controlEndRowHeight(pDiv);
     }
   } else if (maybeRemove.className == "entrySublist"){
     // Need to remove entry sublist if its empty, otherwise
@@ -268,6 +277,7 @@ function addEnToTable(tableID, entry){
     table = document.getElementById(tableID)
     kids = table.children
     kids[kids.length-2].before(entry);
+    controlEndRowHeight(table);
 }
 
 function entry2Expanded(entry){
@@ -288,11 +298,9 @@ function getCurrentFocusedTable(path){
     while (ind < path.length && path[ind].className != "addableDiv"){
         ind += 1
     }
-    console.log(path[ind])
+//    console.log(path[ind]) // Log which one it is
     return path[ind]
 }
-
-
 
 
 
