@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block headextra %}
+
 <script src="{{url_for('static', filename='submitMsg.js')}}"></script>
-
-
 <script src="{{url_for('static', filename='showLastAccessed.js')}}"></script>
+<script src="{{url_for('static', filename='fetchUpdate.js')}}"></script>
 
 {% endblock %}
 
@@ -13,7 +13,9 @@
 
     <div class="container" style="">
         <form class="" id="msg_form">
-          <p><input type="text" name="msg" placeholder="Your Infoglobe Message" maxlength="35" autocomplete="off" required></p>
+          <p><input type="text" name="msg" id="msg_field"
+            placeholder="Your Infoglobe Message"
+            maxlength="35" autocomplete="off" required autofocus></p>
           <p><input type="submit" name="" value="submit"></p>
         </form>
 
@@ -41,9 +43,9 @@
     <div class="container">
         <h1 class="cool-gradient-text" style="padding-bottom:5px;margin-bottom:0px;">See what the people are saying...</h1>
         <div class="break"></div> <!-- break -->
-        <div class="gradient-text">
+        <div id="full_history" class="gradient-text">
             {% for item in history %}
-                {{item}}
+                <span>{{item}}</span>
                 <br>
             {% endfor %}
         </div>
@@ -52,7 +54,7 @@
 
 <footer id="footer" style="text-align:center; color:#154360">
 <!--    <div class="container">-->
-    Made with Love, in Squalor
+    <a style="underline:false" href="https://github.com/kongmunist/InfoglobeWebsite">Made with Love</a>, in Squalor
 <!--    <div class="break"></div> &lt;!&ndash; break &ndash;&gt;-->
     <br>
     Copyright <a style="underline:false" href="https://andykong.org"> A </a> and L

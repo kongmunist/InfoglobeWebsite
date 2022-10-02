@@ -5,12 +5,20 @@ function init() {
 }
 
 function handleForm(event) {
+  // prevent reload
   event.preventDefault();
+
+  // form data
   const form = document.getElementById("msg_form");
   const formData = new FormData(form)
-  const data = JSON.stringify(formData.get('msg'));
+  const msg = formData.get('msg')
+  const data = JSON.stringify(msg);
+
+  // list displays
   const recents = document.getElementById("recent_msg")
-  recents.innerHTML = ""
+  const history = document.getElementById("full_history")
+
+  // send request
   fetch('/savemessage', {
     headers: {
       'Content-Type': 'application/json'
@@ -18,15 +26,22 @@ function handleForm(event) {
     method: 'post',
     body: data,
   })
-  .then(response => response.json())
-  .then(json => json.forEach((item, i) => {
-      const li = document.createElement("li")
-      li.innerHTML = item
-      recents.appendChild(li)
-  }));
+
+  // TODO: don't update if message is not accepted
+
+  // update history
+  const span = document.createElement("span")
+  span.innerHTML = recents.lastElementChild.innerHTML
+  const br = document.createElement("br")
+  history.prepend(span, br)
+
+  // update recents
+  const li = document.createElement("li")
+  li.innerHTML = msg
+  recents.prepend(li)
+  recents.lastElementChild.remove()
 
   form.reset()
 }
-
 
 window.onload = init
