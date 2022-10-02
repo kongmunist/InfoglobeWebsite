@@ -66,6 +66,7 @@
   min-height:1em;
 
   border-bottom: 1px solid #000000;
+  overflow: scroll;
 }
 
 .entryExpanded{
@@ -74,15 +75,25 @@
   min-height:1em;
 
   border-bottom: 1px solid #000000;
-
+  overflow: scroll;
 }
 
 .entrySublist{
   grid-column: 2/3;
   border-bottom: 1px solid #000000;
   border-left: 1px solid #000000;
-
+  overflow: scroll;
 }
+
+.entry:empty, .entryExpanded:empty{
+    background-color: #fcfcfc;
+}
+ entrySublist .innerDiv:empty {
+    background-color: #fcfcfc;
+ }
+/* TODO: get the parent whited when the child is empty.
+not wokrin gnow because entrysublist always has innerdiv in it. Why was that again? */
+
 
 /* nested div table */
 .innerDiv{

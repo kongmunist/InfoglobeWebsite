@@ -5,6 +5,7 @@ document.addEventListener('click', function(event) {
     if (lastClickedADiv != undefined){
         setHeaderColor(lastClickedADiv, "#2196F3");
         lastClickedADiv = null;
+        deleteCounter = 0;
     }
 })
 
@@ -14,22 +15,62 @@ function setHeaderColor(adiv, color){
 
 // Track last focused div so we can delete them and such
 var lastClickedADiv;
+var lastRemovedDiv;
 var deleteCounter = 0;
 
-//document.onclick = () => console.log("body click");
+
+// Only for Escape
+document.onkeydown = function(evt) {
+    evt = evt || window.event;
+    var isEscape = false;
+    if ("key" in evt) {
+        isEscape = (evt.key === "Escape" || evt.key === "Esc");
+    } else {
+        isEscape = (evt.keyCode === 27);
+    }
+
+    if (isEscape) {
+        // Clear color of the last clicked div and then reset it to nothing
+        if (lastClickedADiv != undefined){
+            setHeaderColor(lastClickedADiv, "#2196F3");
+            lastClickedADiv = null;
+            deleteCounter = 0;
+        }
+        // Unfocus current element
+        document.activeElement.blur()
+    }
+};
+
+
 document.addEventListener("keypress", function(event) {
-    console.log(event.keyCode)
+//    console.log(event.keyCode + " " + event.key); // debugging
     if (document.activeElement.tagName == "BODY"){
         if (lastClickedADiv != undefined){ // If one of the addableDivs is selected, do stuff to that div only
-            if (event.key == "x"){
-                
+            // Delete selected after two presses of 'X'
+            if (event.key == "X"){
+                deleteCounter += 1;
+                if (deleteCounter == 1){
+                    setHeaderColor(lastClickedADiv, "red");
+                } else if (deleteCounter == 2){
+                    setHeaderColor(lastClickedADiv, "#2196F3");
+                    lastRemovedDiv = lastClickedADiv;
+                    lastClickedADiv.remove();
+                    deleteCounter = 0;
+                }
             }
-
-        } else{ // If we've not selected an aDiv, do board-wide actions
+        } else { // If we've not selected an aDiv, do board-wide actions
             if (event.key == "n") {
                 createAddableDiv();
             } else if (event.key == "c"){
                 clearAddableDivs();
+            }
+        }
+
+
+        if (event.key == "u"){ // Undo delete
+            if (lastRemovedDiv != undefined){
+                document.body.appendChild(lastRemovedDiv);
+                lastRemovedDiv = undefined;
             }
         }
     }
@@ -139,10 +180,12 @@ function controlEndRowHeight(pDiv){
     let numVertRows = Array.from(pDiv.children).reduce((acc, obj) => {
         if (obj.className != "entrySublist"){
             return acc + 1;
+        } else {
+            return acc
         }
     }, 0);
 
-    pDiv.style.gridTemplateRows = "3em repeat(" + (numVertRows - 3) + ", 1fr) 2em"
+    pDiv.style.gridTemplateRows = "3em repeat(" + (numVertRows - 3) + ", auto) 2em"
     expose = pDiv;
 }
 
@@ -185,10 +228,14 @@ function headerClick(e){
     // Set the last clicked div to this one
     lastClickedADiv = e.path[1];
 
-    console.log("clicked here")
-
     // Change the color
     setHeaderColor(lastClickedADiv, "lightgreen")
+}
+
+function headerUnclick(e){
+    console.log("unclir")
+    // Change the color
+    setHeaderColor(lastClickedADiv, "#2196F3")
 }
 
 function createAddableDiv(){
@@ -208,15 +255,15 @@ function createAddableDiv(){
     // header
     let headerdiv = createDiv("divheader", "");
     headerdiv.id = overallDiv.id + "header";
-    headerdiv.setAttribute('onclick', 'headerClick(event)')
+    headerdiv.setAttribute('ondblclick', 'headerClick(event)')
     overallDiv.appendChild(headerdiv);
 
     // title in header
     let titlebox = createDiv("headertext", "blockClick(event)")
-    titlebox.setAttribute("onmousedown", "blockClick(event)")
-    titlebox.contentEditable = true;
+    titlebox.setAttribute("onmousedown", "blockClick(event)") // prevent dragging instead of editing
+    titlebox.setAttribute("ondblclick", "blockClick(event)") // turn header green, for deleting
     headerdiv.appendChild(titlebox);
-    titlebox.innerHTML = "<p>New Div " + nextAddableDiv + "</p>"
+    titlebox.innerHTML = "<p contenteditable onblur='unfoc()'>New Div " + nextAddableDiv + "</p>"
 
     // plus and minus
     let plus = createDiv("plus", "plusRow(event)")
@@ -262,8 +309,9 @@ function focAndAddDot(event){
     button.style.display = "";
     clicked = event.path[0];
 
-    if (clicked.className == "innerDiv"){
-        clicked = event.path[1]; // If its the inner div, we want the parent cell
+    while (!clicked.className.includes("entry")){
+//        clicked = event.path[1]; // If its the inner div, we want the parent cell
+        clicked = clicked.parentNode;
     }
     moveDotBeside(clicked)
     curFocusedCell = clicked;
@@ -273,6 +321,7 @@ function focAndAddDot(event){
 // When clicking off the element, stop sticking the mouse to that table
 function unfoc(event){
     console.log("esbo blur")
+    saveAllAddableDivs();
 }
 
 function moveDotBeside(elmnt){
@@ -384,6 +433,12 @@ function htmlToElement(html) {
     return template.content.firstChild;
 }
 
+function showSaveMessage(){
+    let saveMessage = document.getElementById("savedtext");
+    saveMessage.style.opacity = 1;
+    setTimeout(function(){saveMessage.style.opacity = 0;}, 200);
+}
+
 function saveAllAddableDivs(){
     // get all addableDivs and their titles
     let allAdds = Array.from(document.getElementsByClassName("addableDiv"));
@@ -394,6 +449,7 @@ function saveAllAddableDivs(){
 
     // Save to localStorage
     localStorage.setItem("adivstorage", jsonStr);
+    showSaveMessage();
     console.log("Save successful with " + allAdds.length + " divs")
 }
 
@@ -426,14 +482,14 @@ function blockClick(e){
 }
 
 
-// For testing/dev
-createAddableDiv()
-tableID = "adiv1"
-addEnToTable(tableID, createEntryWithText("Get residence permit"));
-addEnToTable(tableID, createEntryWithText("Other stuff"));
-en = createEntryWithText("Buy a couch");
-addEnToTable(tableID, en);
-entry2Expanded(en)
+//// For testing/dev
+//createAddableDiv()
+//tableID = "adiv1"
+//addEnToTable(tableID, createEntryWithText("Get residence permit"));
+//addEnToTable(tableID, createEntryWithText("Other stuff"));
+//en = createEntryWithText("Buy a couch");
+//addEnToTable(tableID, en);
+//entry2Expanded(en)
 
-// Make the DIV element draggable:
-dragElement(document.getElementById(tableID));
+// For actual use
+loadAllAddableDivs();
