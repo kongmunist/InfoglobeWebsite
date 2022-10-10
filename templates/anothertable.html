@@ -12,7 +12,6 @@
 
   <script type="text/javascript" src="static//jquery.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
   <link rel="stylesheet" type="text/css" href="/static/anothertable.css">
 
 
@@ -32,22 +31,14 @@
 
 <body>
 
-<button onclick="createAddableDiv()">Add new table</button>
-<p>Press 'n' to create a new table, and 'c' if you made too many</p>
+<!--<button onclick="createAddableDiv()">Add new table</button>-->
+<p style="line-height:1.5em; padding-left:10px;">
+Press 'n' to create a new table, and 'c' if you made too many <br>
+Double click a header and press 'X' twice to delete it. Click 'u' if this was an accident <br><br>
+Saves happen on window moves and defocus events ("on blur") of entries and headers <br>
+<!--Data is stored in localStorage for now to avoid GDPR (and because I'm lazy) <br>-->
+</p>
 
-    <!-- Draggable DIV -->
-<!-- Include a header DIV with the same name as the draggable DIV, followed by "header" -->
-<div id="mydiv" class="addableDiv" onclick="blockClick(event)">
-  <div id="mydivheader" class="divheader">
-    <div contenteditable class="headertext" onmousedown="blockClick(event)" style="">
-      <p>Trip to Zurich</p>
-    </div>
-  </div>
-
-
-  <div class="plus" style="" onclick="plusRow(event)"><b>+</b></div>
-  <div class="minus" style="" onclick="minusRow(event)"><b>—</b></div>
-</div>
 
 
   <div id="editButton" class="editButton" onclick="dotClicked(event)">
@@ -84,6 +75,12 @@
       })
     </script>
 <script src="/static/anothertable.js"></script>
+
+<div style="width:100%; position:absolute; bottom:0;">
+<h3 id="savedtext" style="color:darkgreen; text-align:center; transition: all .1s; opacity:0" >Saved!</h3>
+</div>
+
+
 </body>
 
 

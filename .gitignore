@@ -6,4 +6,5 @@ static/messages.txt
 static/log.txt
 nothing.jpg
 static/lastLogged.txt
+static/timeOffset.txt
 *.ipynb
