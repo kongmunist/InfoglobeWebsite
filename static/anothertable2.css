@@ -1,0 +1,86 @@
+/* Global variables */
+:root {
+  --headersize: 2em;
+}
+
+[contenteditable] {
+    outline: 0px solid transparent;
+}
+
+[contenteditable]:focus{ /* TODO: need to change this to be the parent elem for bodyRows */
+    /*background: #f4eee0;*/
+    background: #e9e0d4;
+}
+
+body{
+    margin:0px;
+    overflow:auto;
+    background-image: url("../static/bg.jpg");
+    background-repeat: repeat;
+}
+
+/* Top level object */
+.holder {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: var(--headersize) auto; /* 1fr should be the last row, tables should start empty */
+    place-items: stretch;
+
+    position: absolute;
+    width:200px;
+    height:200px;
+    overflow: auto;
+
+
+    z-index: 9;
+    background-color: #f1f1f1;
+    border: 1px solid #000000;
+
+    border-radius: .2em;
+}
+
+.resizable{
+    touch-action: none;
+    box-sizing: border-box;
+}
+
+
+
+/* Header stuff */
+.headerBox {
+  padding: 0px 10px 0px 10px;
+  background-color: #2196F3;
+  line-height: var(--headersize);
+  text-align: center;
+  overflow: scroll;
+  /*cursor: move;
+  z-index: 10;
+  background-color: #2196F3;*/
+
+  grid-column: 1 / -1;
+}
+
+
+
+/* Body stuff */
+.bodyBox{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0px 0px 5px 0px;
+
+}
+
+
+/* Row class, each will take up the column*/
+.bodyRow{
+    padding: 0px 5px 0px 5px;
+    height: 100%;
+    align-self:stretch;
+
+    grid-column: 1 / -1;
+}
+/* Fake placeholder text on an empty bodyRow div*/
+.bodyRow[contentEditable=true]:empty:not(:focus):before {
+  content: attr(placeholder);
+  color: #aaa;
+}

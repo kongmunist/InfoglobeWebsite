@@ -8,3 +8,4 @@ nothing.jpg
 static/lastLogged.txt
 static/timeOffset.txt
 *.ipynb
+*.swp

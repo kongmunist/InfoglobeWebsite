@@ -154,6 +154,9 @@ def table():
 def grad_table():
     return render_template("anothertable.html")
 
+@app.route("/dragtable2")
+def grad_table2():
+    return render_template("anothertable2.html")
 
 
 @app.after_request
