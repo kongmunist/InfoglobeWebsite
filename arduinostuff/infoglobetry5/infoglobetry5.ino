@@ -24,7 +24,7 @@
 
 #define numSignals 1
 
-int zeroTime = 988;
+uint16_t zeroTime = 988;
 int oneTime = 1000;
 uint16_t IRSIGS[numSignals][2] = { // Signal on means zero to the spinning arm. 
     {zeroTime,0}
@@ -44,9 +44,6 @@ IRsend irsend(kIrLed);  // Set the GPIO to be used to sending the message.
 
 char infoglobeMsg[35];
 long locTime;
-//int showIndex;
-//int showMax;
-//bool showDate;
 
 const int numMsgs = 6;
 int curMsgIndex = 0;
@@ -62,8 +59,8 @@ String msgs[numMsgs] = {
 long lastDatetimeUpdate = 0;
 long lastDisplayUpdate = 0;
 
-long displayWait = 10000;
-long datetimeWait = displayWait*numMsgs - 100; // wait until all messages are updated to refresh
+long displayWait = 15000;
+long datetimeWait = displayWait*numMsgs + 100; // wait until all messages are updated to refresh
 bool written = false;
 
 
@@ -87,9 +84,6 @@ void setup() {
     lastDatetimeUpdate = millis();
     lastDisplayUpdate = millis();
 
-//    showMax = 4;
-//    showIndex = 2;
-//    showDate = true;
 } 
 
 
@@ -109,7 +103,7 @@ void loop() {
 
 
 
-    ////////////////// Retrieve unix timestamp and messages from aksuper7 site
+    ////////////////// Retrieve messages from aksuper7 site
     if (millis()-lastDatetimeUpdate > datetimeWait){
         locTime = getLocalTime();
         if (locTime > 0){
@@ -120,15 +114,12 @@ void loop() {
         lastDisplayUpdate = millis();
         written = false;
         curMsgIndex = 0;
-    } else if (millis() - lastDisplayUpdate > displayWait){
-        ///////////////////////// Load next message, update time and date string
-//        unix2date(locTime + (millis()-lastDatetimeUpdate)/1000);
-//        unix2time(locTime + (millis()-lastDatetimeUpdate)/1000);
+        
+    } else if (millis() - lastDisplayUpdate > displayWait){ // Load next message, update time and date string
         infoAddMsg(msgs[curMsgIndex]);
         
         curMsgIndex += 1;
         curMsgIndex %= numMsgs;
-//        showIndex = (showIndex+1) % showMax;
     
         lastDisplayUpdate = millis();
         written = false;
@@ -146,28 +137,28 @@ void loop() {
     
     Serial.println("Loop");
     digitalWrite(LED_BUILTIN, HIGH);
-    delay(4000);
+    delay(7400);
 } 
 
 
 void sendSig(){
     // Send it
-        Serial.println("Sending Sig");
-        Serial.println(msgLen);
-        for (int i = 0; i < msgLen; i++){
-            if (sig[i] == 0){ // Send 1 ms of signal
-                irsend.sendRaw(IRSIGS[curSig], sizeof(IRSIGS[curSig])/sizeof(IRSIGS[curSig][0]), 38);
-            } else{
-                delayMicroseconds(oneTime);
-            }
+    Serial.println("Sending Sig");
+    Serial.println(msgLen);
+    for (int i = 0; i < msgLen; i++){
+        if (sig[i] == 0){ // Send 1 ms of signal
+            irsend.sendRaw(IRSIGS[curSig], sizeof(IRSIGS[curSig])/sizeof(IRSIGS[curSig][0]), 38);
+        } else{
+            delayMicroseconds(oneTime);
         }
-        Serial.println("Done Sending Sig");   
+    }
+    Serial.println("Done Sending Sig");   
 }
 
 ///////////////////////// Makes an API call to worldtimeapi and gets the timezone localized unixtime
 ///////////////////////// This can then be converting using the TimeLib Library
-const char* ssid = "Logos7";
-const char* password = "Godslove7";
+const char* ssid = "WOKO_Bahnhalde";
+const char* password = "";
 
 long getLocalTime(){
     if (WiFi.status() == WL_CONNECTED) {
@@ -372,7 +363,7 @@ int msg2bool(bool* buf, String msg, int effect){
         return numBits;
     } else { // first 8 bits are from 0x04
         for (int i = 0; i<8; i++){ 
-            buf[numBits] = bitRead(5, 7-i);
+            buf[numBits] = bitRead(4, 7-i);
             numBits += 1;
         }
     }
